@@ -12,19 +12,27 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 public class Launcher extends SubsystemBase {
 
     private Servo launchServo;
-    private Gamepad gamepad;
 
-    public Launcher(Gamepad gamepad, HardwareMap hardwareMap) {
-        launchServo = hardwareMap.get(Servo.class, "launch");
+    public enum PlaneState {
+        LAUNCH(1),
+        RESET(0);
 
-        this.gamepad = gamepad;
+        public double position;
+
+        PlaneState(double position) {
+            this.position = position;
+        }
     }
 
-    public void airplaneLauncher() {
-        if (gamepad.triangle) {
-            launchServo.setPosition(0);
-        } else if (gamepad.square) {
-            launchServo.setPosition(1);
-        }
+    public Launcher(HardwareMap hardwareMap) {
+        launchServo = hardwareMap.get(ServoImplEx.class, "launcher");
+    }
+
+    public void launch() {
+        launchServo.setPosition(PlaneState.LAUNCH.position);
+    }
+
+    public void reset() {
+        launchServo.setPosition(PlaneState.RESET.position);
     }
 }

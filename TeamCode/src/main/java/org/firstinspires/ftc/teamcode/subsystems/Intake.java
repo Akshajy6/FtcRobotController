@@ -10,31 +10,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Intake extends SubsystemBase {
 
     private DcMotorEx intakeMotor;
-    private Gamepad gamepad;
-    private boolean isAuto;
-
-    public Intake(Gamepad gamepad, HardwareMap hardwareMap) {
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "leftEncoder");
-        isAuto = false;
-
-        this.gamepad = gamepad;
-    }
 
     public Intake(HardwareMap hardwareMap) {
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "leftEncoder");
-        isAuto = true;
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_leftEncoder");
     }
 
     public void intake() {
-        if (!isAuto) {
-            double power = gamepad.left_trigger - gamepad.right_trigger;
-            intakeMotor.setPower(power);
-        } else {
-            intakeMotor.setPower(1);
-        }
+        intakeMotor.setPower(1);
     }
-    public void autoIntake(double p) {
-        intakeMotor.setPower(p);
+
+    public void setPower(double power) {
+        intakeMotor.setPower(power);
     }
 
     public void outtake() {
